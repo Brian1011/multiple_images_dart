@@ -50,31 +50,40 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // get images from assets folder and add to images list
     File file = await getImageFileFromAssets('la_city.jpeg');
-    File file2 = await getImageFileFromAssets('la_city.jpeg');
+    File file2 = await getImageFileFromAssets('nairobi_city.jpeg');
 
-    images.add(MultipartFile.fromFileSync(file.path, filename: "image1"));
-    images.add(MultipartFile.fromFileSync(file2.path, filename: "image2"));
+    MultipartFile multipartFile1 =
+        MultipartFile.fromFileSync(file.path, filename: "image1");
+    MultipartFile multipartFile2 =
+        MultipartFile.fromFileSync(file2.path, filename: "image2");
 
     print('**********************images*****************');
     print(images);
 
-    UserData userOne =
-        UserData(id: 1, name: "John Doe", images: images, supervisors: []);
-    UserData userTwo = UserData(
-        id: 1, name: "Jane Doe", images: images, supervisors: [userOne]);
+    UserData userOne = UserData(
+      id: 1,
+      name: "John Doe",
+      images: [multipartFile1],
+    );
+    UserData userTwo =
+        UserData(id: 1, name: "Jane Doe", images: [multipartFile2]);
 
     List<UserData> users = [userOne, userTwo];
     print('**********************user*****************');
     print(userOne.toJson());
 
-    var data = {
-      "data": 1,
-      "entries": users.map((record) => record.toJson()).toList()
+    var data = {"data": 1, "entries": userOne.toJson()};
+
+    var data2 = {'data': 2, "entries": userTwo.toJson()};
+
+    var data3 = {
+      'images': [data, data2],
     };
 
-    FormData formData = FormData.fromMap(data);
+    FormData formData = FormData.fromMap(data3);
 
     print('**********************formData*****************');
+    print(data3);
     print(formData.fields);
     print(formData.files);
 
